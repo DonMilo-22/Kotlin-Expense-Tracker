@@ -12,7 +12,7 @@ fun load(): MutableList<Expense> {
     }.toMutableList()
 }
 fun save(items: List<Expense>) = store.writeText(items.joinToString("\n") { it.date + "\t" + it.amount + "\t" + it.category + "\t" + it.description })
-fun help() = println("Commands: add <amount> <category> <description...> | list | summary [YYYY-MM] | help")
+fun help() = println("Commands: add <amount> <category> <description...> | list | delete <number> | summary [YYYY-MM] | help")
 
 fun main(args: Array<String>) {
     val items = load()
@@ -24,6 +24,13 @@ fun main(args: Array<String>) {
             items += e; save(items); println("Saved: " + e.description + " - " + "%.2f".format(e.amount))
         }
         "list" -> if (items.isEmpty()) println("No entries yet.") else items.forEach { println(it.date + " | " + it.category + " | " + "%.2f".format(it.amount) + " | " + it.description) }
+        "delete" -> {
+            val index = args.getOrNull(1)?.toIntOrNull()?.minus(1) ?: return println("Use: delete <number>")
+            if (index !in items.indices) return println("Expense not found.")
+            val removed = items.removeAt(index)
+            save(items)
+            println("Deleted: " + removed.description)
+        }
         "summary" -> {
             val month = args.getOrNull(1) ?: LocalDate.now().toString().take(7)
             val filtered = items.filter { it.date.startsWith(month) }
