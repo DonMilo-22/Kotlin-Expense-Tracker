@@ -38,3 +38,7 @@ The app creates `expenses.tsv` automatically.
 
 ## License
 MIT.
+
+## 🆕 Recent changes
+
+- Added `delete <number>` so saved expenses can be removed directly from the CLI.
