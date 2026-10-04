@@ -20,7 +20,10 @@ fun main(args: Array<String>) {
         "add" -> {
             if (args.size < 4) return help()
             val amount = args[1].toDoubleOrNull() ?: return println("Invalid amount.")
-            val e = Expense(LocalDate.now().toString(), amount, args[2], args.drop(3).joinToString(" "))
+            if (!amount.isFinite() || amount <= 0) return println("Amount must be greater than zero.")
+            val description = args.drop(3).joinToString(" ").trim()
+            if (args[2].isBlank() || description.isEmpty()) return println("Category and description are required.")
+            val e = Expense(LocalDate.now().toString(), amount, args[2], description)
             items += e; save(items); println("Saved: " + e.description + " - " + "%.2f".format(e.amount))
         }
         "list" -> if (items.isEmpty()) println("No entries yet.") else items.forEach { println(it.date + " | " + it.category + " | " + "%.2f".format(it.amount) + " | " + it.description) }
