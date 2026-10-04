@@ -41,4 +41,10 @@ MIT.
 
 ## 🆕 Recent changes
 
+### 2026-10-04
+
+- New input validation rejects zero or negative amounts and empty expense descriptions.
+
+### Previous update
+
 - Added `delete <number>` so saved expenses can be removed directly from the CLI.
