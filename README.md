@@ -41,6 +41,12 @@ MIT.
 
 ## 🆕 Recent changes
 
+### 2026-10-05
+
+- `list` now accepts an optional category, for example `list food`.
+
+### 2026-10-04
+
 ### 2026-10-04
 
 - New input validation rejects zero or negative amounts and empty expense descriptions.
