@@ -12,7 +12,7 @@ fun load(): MutableList<Expense> {
     }.toMutableList()
 }
 fun save(items: List<Expense>) = store.writeText(items.joinToString("\n") { it.date + "\t" + it.amount + "\t" + it.category + "\t" + it.description })
-fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | help")
+fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | help")
 
 fun main(args: Array<String>) {
     val items = load()
@@ -38,6 +38,7 @@ fun main(args: Array<String>) {
             save(items)
             println("Deleted: " + removed.description)
         }
+        "total" -> println("All-time total: " + "%.2f".format(items.sumOf { it.amount }))
         "summary" -> {
             val month = args.getOrNull(1) ?: LocalDate.now().toString().take(7)
             val filtered = items.filter { it.date.startsWith(month) }
