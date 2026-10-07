@@ -41,11 +41,13 @@ MIT.
 
 ## 🆕 Recent changes
 
+### 2026-10-06
+
+- Added a `total` command to display total expenses across all months.
+
 ### 2026-10-05
 
 - `list` now accepts an optional category, for example `list food`.
-
-### 2026-10-04
 
 ### 2026-10-04
 
