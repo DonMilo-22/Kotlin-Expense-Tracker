@@ -41,6 +41,10 @@ MIT.
 
 ## 🆕 Recent changes
 
+### 2026-10-07
+
+- Added an `average` command to show the average value of saved expenses.
+
 ### 2026-10-06
 
 - Added a `total` command to display total expenses across all months.
