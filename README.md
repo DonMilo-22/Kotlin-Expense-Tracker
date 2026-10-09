@@ -41,6 +41,10 @@ MIT.
 
 ## 🆕 Recent changes
 
+### 2026-10-08
+
+- Added a `categories` command that lists total spending for every category.
+
 ### 2026-10-07
 
 - Added an `average` command to show the average value of saved expenses.
