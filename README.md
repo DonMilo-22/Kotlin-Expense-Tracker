@@ -41,6 +41,10 @@ MIT.
 
 ## 🆕 Recent changes
 
+### 2026-10-09
+
+- Added a `largest` command to show the highest saved expense.
+
 ### 2026-10-08
 
 - Added a `categories` command that lists total spending for every category.
