@@ -1,70 +1,63 @@
-# 💸 Kotlin Expense Tracker
+# Kotlin Expense Tracker
 
-A simple terminal expense tracker built with Kotlin.
+Registro local de gastos desde la terminal, desarrollado con Kotlin/JVM.
 
-![Kotlin](https://img.shields.io/badge/Kotlin-2.x-7F52FF?logo=kotlin&logoColor=white)
-![JVM](https://img.shields.io/badge/JVM-17%2B-E76F00?logo=openjdk&logoColor=white)
+Permite agregar gastos, consultarlos por categoría y obtener resúmenes mensuales sin una base de datos.
 
-## What it does
-Register everyday expenses, organize them by category, list your history and calculate monthly totals. Everything is stored locally.
+## Funciones actuales
 
-## Features
-- Add expenses with amount, category and description
-- List saved entries
-- View totals by category
-- Filter summaries by month
-- Local storage with no database
+- Agregar, listar y eliminar gastos.
+- Resumen mensual por categoría y total general.
+- Promedio, gasto mayor y totales por categoría de todo el historial.
+- Validación de importes positivos y finitos, categoría y descripción.
+- Persistencia local en TSV.
 
-## Run
+## Requisitos
+
+JDK 17 y Gradle compatible con Kotlin JVM 2.0.21, versión declarada en `build.gradle.kts`. El repositorio no incluye Gradle Wrapper; los comandos usan una instalación local de `gradle`.
+
+## Instalación y uso
+
 ```bash
-gradle run --args='add 149.90 food Dinner'
+git clone https://github.com/DonMilo-22/Kotlin-Expense-Tracker.git
+cd Kotlin-Expense-Tracker
+gradle run --args='add 149.90 comida Cena'
 gradle run --args='list'
 gradle run --args='summary'
 ```
 
-## Commands
-```text
-add <amount> <category> <description...>
-list
-summary [YYYY-MM]
-help
-```
+## Comandos
 
-## Requirements
-JDK 17+ and Gradle.
+Ejecuta cada comando con `gradle run --args='<comando>'`.
 
-## Storage
-The app creates `expenses.tsv` automatically.
+| Comando | Ejemplo | Resultado |
+|---|---|---|
+| `add <importe> <categoría> <descripción...>` | `add 149.90 comida Cena` | Registra un gasto con fecha local de hoy. |
+| `list [categoría]` | `list comida` | Lista todos o filtra sin distinguir mayúsculas. |
+| `delete <número>` | `delete 1` | Borra la posición de base 1 en el historial completo. |
+| `summary [YYYY-MM]` | `summary 2026-10` | Resume el mes indicado; sin argumento usa el actual. |
+| `total` | `total` | Total de todo el historial. |
+| `average` | `average` | Importe promedio; cero si no hay gastos. |
+| `categories` | `categories` | Totales de todas las categorías, agrupando sin distinguir mayúsculas. |
+| `largest` | `largest` | Gasto de mayor importe. |
+| `help` | `help` | Muestra ayuda. |
 
-## License
-MIT.
+## Almacenamiento y límites
 
-## 🆕 Recent changes
+`expenses.tsv` se crea en el directorio de trabajo del proceso. Al usar `gradle run` desde la raíz del proyecto se guarda ahí. Cada línea contiene fecha, importe, categoría y descripción separados por tabuladores.
 
-### 2026-10-09
+`delete` usa la posición del archivo completo, no la posición de una lista filtrada; `list` no imprime números. Revisa el historial completo antes de borrar y conserva una copia si la necesitas. No hay recuperación, sincronización, selector de moneda ni edición de fecha. Los importes usan `Double`; es una práctica educativa, no un sistema contable.
 
-- Added a `largest` command to show the highest saved expense.
+## Comprobaciones
 
-### 2026-10-08
+`gradle build` comprueba la compilación. `gradle run --args='help'` muestra la referencia disponible.
 
-- Added a `categories` command that lists total spending for every category.
+## Autor y licencia
 
-### 2026-10-07
+Desarrollado por [DonMilo-22](https://github.com/DonMilo-22).
 
-- Added an `average` command to show the average value of saved expenses.
+Licencia: MIT.
 
-### 2026-10-06
+## Historial
 
-- Added a `total` command to display total expenses across all months.
-
-### 2026-10-05
-
-- `list` now accepts an optional category, for example `list food`.
-
-### 2026-10-04
-
-- New input validation rejects zero or negative amounts and empty expense descriptions.
-
-### Previous update
-
-- Added `delete <number>` so saved expenses can be removed directly from the CLI.
+Consulta [CHANGELOG.md](CHANGELOG.md) para ver las actualizaciones.
