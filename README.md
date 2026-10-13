@@ -64,6 +64,8 @@ Licencia: MIT.
 
 ## Actualización adicional 2026-10-12
 
+- Added the `today` command to show expenses recorded on the current date and their total.
+
 - Added the `today` command to show only expenses recorded on the current date.
 
 ## Historial
