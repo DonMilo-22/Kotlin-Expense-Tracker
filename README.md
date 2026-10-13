@@ -62,6 +62,10 @@ Licencia: MIT.
 
 - Added a `stats` command with entry count, category count and all-time total.
 
+## Actualización adicional 2026-10-12
+
+- Added the `today` command to show only expenses recorded on the current date.
+
 ## Historial
 
 Consulta [CHANGELOG.md](CHANGELOG.md) para ver las actualizaciones.
