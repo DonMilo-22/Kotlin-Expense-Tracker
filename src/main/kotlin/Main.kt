@@ -44,6 +44,12 @@ fun main(args: Array<String>) {
             if (todays.isEmpty()) println("No expenses today.") else todays.forEach { println(it.date + " | " + it.category + " | " + "%.2f".format(it.amount) + " | " + it.description) }
             println("Today total: " + "%.2f".format(todays.sumOf { it.amount }))
         }
+        "today" -> {
+            val today = LocalDate.now().toString()
+            val todays = items.filter { it.date == today }
+            if (todays.isEmpty()) println("No expenses today.") else todays.forEach { println(it.date + " | " + it.category + " | " + "%.2f".format(it.amount) + " | " + it.description) }
+            println("Today total: " + "%.2f".format(todays.sumOf { it.amount }))
+        }
         "total" -> println("All-time total: " + "%.2f".format(items.sumOf { it.amount }))
         "average" -> println("Average expense: " + "%.2f".format(if (items.isEmpty()) 0.0 else items.map { it.amount }.average()))
         "categories" -> items.groupBy { it.category.lowercase() }.toSortedMap().forEach { (category, values) -> println(category + ": " + "%.2f".format(values.sumOf { it.amount })) }
