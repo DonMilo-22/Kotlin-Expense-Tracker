@@ -12,7 +12,7 @@ fun load(): MutableList<Expense> {
     }.toMutableList()
 }
 fun save(items: List<Expense>) = store.writeText(items.joinToString("\n") { it.date + "\t" + it.amount + "\t" + it.category + "\t" + it.description })
-fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | largest | stats | help")
+fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | largest | stats | today | help")
 
 fun main(args: Array<String>) {
     val items = load()
@@ -37,6 +37,12 @@ fun main(args: Array<String>) {
             val removed = items.removeAt(index)
             save(items)
             println("Deleted: " + removed.description)
+        }
+        "today" -> {
+            val today = LocalDate.now().toString()
+            val todays = items.filter { it.date == today }
+            if (todays.isEmpty()) println("No expenses today.") else todays.forEach { println(it.date + " | " + it.category + " | " + "%.2f".format(it.amount) + " | " + it.description) }
+            println("Today total: " + "%.2f".format(todays.sumOf { it.amount }))
         }
         "total" -> println("All-time total: " + "%.2f".format(items.sumOf { it.amount }))
         "average" -> println("Average expense: " + "%.2f".format(if (items.isEmpty()) 0.0 else items.map { it.amount }.average()))
