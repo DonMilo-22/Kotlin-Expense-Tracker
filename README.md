@@ -71,3 +71,7 @@ Licencia: MIT.
 ## Historial
 
 Consulta [CHANGELOG.md](CHANGELOG.md) para ver las actualizaciones.
+
+## Actualización 2026-10-14
+
+- Added `budget <amount> [YYYY-MM]` to compare a monthly spending limit with recorded expenses.
