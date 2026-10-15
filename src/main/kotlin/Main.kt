@@ -12,7 +12,7 @@ fun load(): MutableList<Expense> {
     }.toMutableList()
 }
 fun save(items: List<Expense>) = store.writeText(items.joinToString("\n") { it.date + "\t" + it.amount + "\t" + it.category + "\t" + it.description })
-fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | largest | stats | today | help")
+fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | largest | stats | today | budget <amount> [YYYY-MM] | help")
 
 fun main(args: Array<String>) {
     val items = load()
@@ -44,11 +44,19 @@ fun main(args: Array<String>) {
             if (todays.isEmpty()) println("No expenses today.") else todays.forEach { println(it.date + " | " + it.category + " | " + "%.2f".format(it.amount) + " | " + it.description) }
             println("Today total: " + "%.2f".format(todays.sumOf { it.amount }))
         }
-        "today" -> {
-            val today = LocalDate.now().toString()
-            val todays = items.filter { it.date == today }
-            if (todays.isEmpty()) println("No expenses today.") else todays.forEach { println(it.date + " | " + it.category + " | " + "%.2f".format(it.amount) + " | " + it.description) }
-            println("Today total: " + "%.2f".format(todays.sumOf { it.amount }))
+        "budget" -> {
+            val limit = args.getOrNull(1)?.toDoubleOrNull()
+            if (limit == null || !limit.isFinite() || limit < 0) {
+                println("Use: budget <non-negative amount> [YYYY-MM]")
+            } else {
+                val month = args.getOrNull(2) ?: LocalDate.now().toString().take(7)
+                if (!month.matches(Regex("\\d{4}-\\d{2}"))) {
+                    println("Month must use YYYY-MM format.")
+                } else {
+                    val spent = items.filter { it.date.startsWith(month) }.sumOf { it.amount }
+                    println("Budget for $month: " + "%.2f".format(limit) + " | Spent: " + "%.2f".format(spent) + " | Remaining: " + "%.2f".format(limit - spent))
+                }
+            }
         }
         "total" -> println("All-time total: " + "%.2f".format(items.sumOf { it.amount }))
         "average" -> println("Average expense: " + "%.2f".format(if (items.isEmpty()) 0.0 else items.map { it.amount }.average()))
