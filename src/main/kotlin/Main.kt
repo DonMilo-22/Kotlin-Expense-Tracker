@@ -12,7 +12,7 @@ fun load(): MutableList<Expense> {
     }.toMutableList()
 }
 fun save(items: List<Expense>) = store.writeText(items.joinToString("\n") { it.date + "\t" + it.amount + "\t" + it.category + "\t" + it.description })
-fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | largest | stats | today | budget <amount> [YYYY-MM] | help")
+fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | top-category | largest | stats | today | budget <amount> [YYYY-MM] | help")
 
 fun main(args: Array<String>) {
     val items = load()
@@ -61,6 +61,12 @@ fun main(args: Array<String>) {
         "total" -> println("All-time total: " + "%.2f".format(items.sumOf { it.amount }))
         "average" -> println("Average expense: " + "%.2f".format(if (items.isEmpty()) 0.0 else items.map { it.amount }.average()))
         "categories" -> items.groupBy { it.category.lowercase() }.toSortedMap().forEach { (category, values) -> println(category + ": " + "%.2f".format(values.sumOf { it.amount })) }
+        "top-category" -> {
+            val top = items.groupBy { it.category }
+                .maxByOrNull { (_, values) -> values.sumOf { it.amount } }
+            if (top == null) println("No expenses yet.")
+            else println("Top category: " + top.key + " | " + "%.2f".format(top.value.sumOf { it.amount }))
+        }
         "stats" -> {
             val categories = items.map { it.category.lowercase() }.distinct().size
             println("Entries: " + items.size + " | Categories: " + categories + " | Total: " + "%.2f".format(items.sumOf { it.amount }))
