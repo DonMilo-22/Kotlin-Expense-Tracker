@@ -79,3 +79,12 @@ Consulta [CHANGELOG.md](CHANGELOG.md) para ver las actualizaciones.
 ## Actualización 2026-10-15
 
 - Added `top-category` to show the category with the highest total spending.
+
+
+## Actualización 2026-10-16
+
+- Added the `week` command to list expenses from today and the previous six days, with a total for that period.
+
+```bash
+kotlin Main.kt week
+```
