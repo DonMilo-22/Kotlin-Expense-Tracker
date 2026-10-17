@@ -12,7 +12,7 @@ fun load(): MutableList<Expense> {
     }.toMutableList()
 }
 fun save(items: List<Expense>) = store.writeText(items.joinToString("\n") { it.date + "\t" + it.amount + "\t" + it.category + "\t" + it.description })
-fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | top-category | largest | stats | today | budget <amount> [YYYY-MM] | help")
+fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | top-category | largest | stats | today | week | budget <amount> [YYYY-MM] | help")
 
 fun main(args: Array<String>) {
     val items = load()
@@ -37,6 +37,17 @@ fun main(args: Array<String>) {
             val removed = items.removeAt(index)
             save(items)
             println("Deleted: " + removed.description)
+        }
+        "week" -> {
+            val today = LocalDate.now()
+            val start = today.minusDays(6)
+            val recent = items.filter {
+                val date = runCatching { LocalDate.parse(it.date) }.getOrNull()
+                date != null && !date.isBefore(start) && !date.isAfter(today)
+            }
+            if (recent.isEmpty()) println("No expenses in the last 7 days.")
+            else recent.forEach { println(it.date + " | " + it.category + " | " + "%.2f".format(it.amount) + " | " + it.description) }
+            println("Last 7 days total: " + "%.2f".format(recent.sumOf { it.amount }))
         }
         "today" -> {
             val today = LocalDate.now().toString()
