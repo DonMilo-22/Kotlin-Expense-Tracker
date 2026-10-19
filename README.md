@@ -88,3 +88,14 @@ Consulta [CHANGELOG.md](CHANGELOG.md) para ver las actualizaciones.
 ```bash
 kotlin Main.kt week
 ```
+
+
+## Utilidad nueva: comprobar presupuesto
+
+Puedes comparar un presupuesto mensual con los importes del archivo TSV sin cambiar el historial:
+
+```bash
+kotlinc -script tools/budget-check.kts -- 5000 expenses.tsv
+```
+
+El script suma la segunda columna numérica del TSV y muestra el saldo restante o cuánto se excedió. Requiere el compilador Kotlin instalado; usa `BigDecimal` para hacer la suma decimal.
