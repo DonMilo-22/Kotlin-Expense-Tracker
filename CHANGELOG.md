@@ -1,3 +1,8 @@
+
+
+### 2026-10-18
+
+- Added `tools/budget-check.kts` to compare a chosen budget against saved TSV expense amounts and report remaining or exceeded funds.
 # Historial de cambios
 
 Entradas originales conservadas en inglés. Las fechas corresponden al historial existente; la última entrada no tenía fecha registrada.
