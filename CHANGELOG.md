@@ -1,5 +1,10 @@
 
 
+### 2026-10-19
+
+- Added `tools/category-summary.kts` to total TSV expense amounts by category.
+
+
 ### 2026-10-18
 
 - Added `tools/budget-check.kts` to compare a chosen budget against saved TSV expense amounts and report remaining or exceeded funds.
