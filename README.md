@@ -99,3 +99,14 @@ kotlinc -script tools/budget-check.kts -- 5000 expenses.tsv
 ```
 
 El script suma la segunda columna numérica del TSV y muestra el saldo restante o cuánto se excedió. Requiere el compilador Kotlin instalado; usa `BigDecimal` para hacer la suma decimal.
+
+
+## New utility: totals by category
+
+Summarize a TSV expense file by category:
+
+```bash
+kotlinc -script tools/category-summary.kts -- expenses.tsv
+```
+
+The helper expects amount in column 2 and category in column 3, skips rows without a numeric amount, and prints one total per category. It leaves the source file unchanged.
