@@ -110,3 +110,12 @@ kotlinc -script tools/category-summary.kts -- expenses.tsv
 ```
 
 The helper expects amount in column 2 and category in column 3, skips rows without a numeric amount, and prints one total per category. It leaves the source file unchanged.
+
+
+## Actualización 2026-10-25
+
+- Added `export-csv` to export dates, amounts, categories, and descriptions to `expenses.csv`, with CSV-safe quoting for commas and quotation marks.
+
+```bash
+kotlin Main.kt export-csv
+```
