@@ -12,7 +12,7 @@ fun load(): MutableList<Expense> {
     }.toMutableList()
 }
 fun save(items: List<Expense>) = store.writeText(items.joinToString("\n") { it.date + "\t" + it.amount + "\t" + it.category + "\t" + it.description })
-fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | top-category | largest | stats | today | week | budget <amount> [YYYY-MM] | help")
+fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | top-category | largest | stats | today | week | budget <amount> [YYYY-MM] | export-csv | help")
 
 fun main(args: Array<String>) {
     val items = load()
@@ -37,6 +37,14 @@ fun main(args: Array<String>) {
             val removed = items.removeAt(index)
             save(items)
             println("Deleted: " + removed.description)
+        }
+        "export-csv" -> {
+            fun csv(value: String): String = "\"" + value.replace("\"", "\"\"") + "\""
+            val rows = listOf("date,amount,category,description") + items.map {
+                listOf(it.date, it.amount.toString(), it.category, it.description).joinToString(",") { value -> csv(value) }
+            }
+            File("expenses.csv").writeText(rows.joinToString("\n") + "\n")
+            println("Exported ${items.size} expense(s) to expenses.csv")
         }
         "week" -> {
             val today = LocalDate.now()
