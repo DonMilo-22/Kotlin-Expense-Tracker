@@ -12,7 +12,7 @@ fun load(): MutableList<Expense> {
     }.toMutableList()
 }
 fun save(items: List<Expense>) = store.writeText(items.joinToString("\n") { it.date + "\t" + it.amount + "\t" + it.category + "\t" + it.description })
-fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | top-category | largest | stats | today | week | budget <amount> [YYYY-MM] | export-csv | help")
+fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | top-category | largest | stats | today | week | budget <amount> [YYYY-MM] | export-csv | year-summary [YYYY] | help")
 
 fun main(args: Array<String>) {
     val items = load()
@@ -38,7 +38,7 @@ fun main(args: Array<String>) {
             save(items)
             println("Deleted: " + removed.description)
         }
-        "export-csv" -> {
+        "year-summary" -> {\n            val year = args.getOrNull(1) ?: LocalDate.now().year.toString()\n            if (!year.matches(Regex("\\\\d{4}"))) return println("Year must use YYYY format.")\n            val monthly = items.filter { it.date.startsWith("$year-") }.groupBy { it.date.take(7) }.toSortedMap()\n            if (monthly.isEmpty()) println("No expenses for $year.")\n            monthly.forEach { (month, expenses) -> println("$month | " + "%.2f".format(expenses.sumOf { it.amount })) }\n            println("Year total: " + "%.2f".format(monthly.values.flatten().sumOf { it.amount }))\n        }\n        "export-csv" -> {
             fun csv(value: String): String = "\"" + value.replace("\"", "\"\"") + "\""
             val rows = listOf("date,amount,category,description") + items.map {
                 listOf(it.date, it.amount.toString(), it.category, it.description).joinToString(",") { value -> csv(value) }
