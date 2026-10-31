@@ -119,3 +119,7 @@ The helper expects amount in column 2 and category in column 3, skips rows witho
 ```bash
 kotlin Main.kt export-csv
 ```
+
+## Actualización 2026-10-30
+
+- Added `year-summary [YYYY]` to display monthly expense totals and the annual total for the selected year (current year by default). Example: `./gradlew run --args="year-summary 2026"`.
