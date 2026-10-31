@@ -46,6 +46,14 @@ fun main(args: Array<String>) {
             monthly.forEach { (month, expenses) -> println("$month | " + "%.2f".format(expenses.sumOf { it.amount })) }
             println("Year total: " + "%.2f".format(monthly.values.flatten().sumOf { it.amount }))
         }
+        "year-summary" -> {
+            val year = args.getOrNull(1) ?: LocalDate.now().year.toString()
+            if (!year.matches(Regex("\\d{4}"))) return println("Year must use YYYY format.")
+            val monthly = items.filter { it.date.startsWith("$year-") }.groupBy { it.date.take(7) }.toSortedMap()
+            if (monthly.isEmpty()) println("No expenses for $year.")
+            monthly.forEach { (month, expenses) -> println("$month | " + "%.2f".format(expenses.sumOf { it.amount })) }
+            println("Year total: " + "%.2f".format(monthly.values.flatten().sumOf { it.amount }))
+        }
         "export-csv" -> {
             fun csv(value: String): String = "\"" + value.replace("\"", "\"\"") + "\""
             val rows = listOf("date,amount,category,description") + items.map {
