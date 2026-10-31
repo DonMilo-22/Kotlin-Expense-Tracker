@@ -40,7 +40,7 @@ fun main(args: Array<String>) {
         }
         "year-summary" -> {
             val year = args.getOrNull(1) ?: LocalDate.now().year.toString()
-            if (!year.matches(Regex("\\\\d{4}"))) return println("Year must use YYYY format.")
+            if (!year.matches(Regex("\\d{4}"))) return println("Year must use YYYY format.")
             val monthly = items.filter { it.date.startsWith("$year-") }.groupBy { it.date.take(7) }.toSortedMap()
             if (monthly.isEmpty()) println("No expenses for $year.")
             monthly.forEach { (month, expenses) -> println("$month | " + "%.2f".format(expenses.sumOf { it.amount })) }
