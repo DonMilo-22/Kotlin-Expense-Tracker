@@ -38,7 +38,15 @@ fun main(args: Array<String>) {
             save(items)
             println("Deleted: " + removed.description)
         }
-        "year-summary" -> {\n            val year = args.getOrNull(1) ?: LocalDate.now().year.toString()\n            if (!year.matches(Regex("\\\\d{4}"))) return println("Year must use YYYY format.")\n            val monthly = items.filter { it.date.startsWith("$year-") }.groupBy { it.date.take(7) }.toSortedMap()\n            if (monthly.isEmpty()) println("No expenses for $year.")\n            monthly.forEach { (month, expenses) -> println("$month | " + "%.2f".format(expenses.sumOf { it.amount })) }\n            println("Year total: " + "%.2f".format(monthly.values.flatten().sumOf { it.amount }))\n        }\n        "export-csv" -> {
+        "year-summary" -> {
+            val year = args.getOrNull(1) ?: LocalDate.now().year.toString()
+            if (!year.matches(Regex("\\\\d{4}"))) return println("Year must use YYYY format.")
+            val monthly = items.filter { it.date.startsWith("$year-") }.groupBy { it.date.take(7) }.toSortedMap()
+            if (monthly.isEmpty()) println("No expenses for $year.")
+            monthly.forEach { (month, expenses) -> println("$month | " + "%.2f".format(expenses.sumOf { it.amount })) }
+            println("Year total: " + "%.2f".format(monthly.values.flatten().sumOf { it.amount }))
+        }
+        "export-csv" -> {
             fun csv(value: String): String = "\"" + value.replace("\"", "\"\"") + "\""
             val rows = listOf("date,amount,category,description") + items.map {
                 listOf(it.date, it.amount.toString(), it.category, it.description).joinToString(",") { value -> csv(value) }
