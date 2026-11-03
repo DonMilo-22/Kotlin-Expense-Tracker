@@ -38,7 +38,18 @@ fun main(args: Array<String>) {
             save(items)
             println("Deleted: " + removed.description)
         }
-        "month-compare" -> {\n            val first = args.getOrNull(1) ?: return println("Use: month-compare YYYY-MM YYYY-MM")\n            val second = args.getOrNull(2) ?: return println("Use: month-compare YYYY-MM YYYY-MM")\n            val validMonth = Regex("\\\\d{4}-\\\\d{2}")\n            if (!validMonth.matches(first) || !validMonth.matches(second)) return println("Months must use YYYY-MM format.")\n            val firstTotal = items.filter { it.date.startsWith(first) }.sumOf { it.amount }\n            val secondTotal = items.filter { it.date.startsWith(second) }.sumOf { it.amount }\n            println("$first: " + "%.2f".format(firstTotal))\n            println("$second: " + "%.2f".format(secondTotal))\n            println("Difference: " + "%.2f".format(kotlin.math.abs(firstTotal - secondTotal)))\n        }\n        "year-summary" -> {
+        "month-compare" -> {
+            val first = args.getOrNull(1) ?: return println("Use: month-compare YYYY-MM YYYY-MM")
+            val second = args.getOrNull(2) ?: return println("Use: month-compare YYYY-MM YYYY-MM")
+            val validMonth = Regex("\\d{4}-\\\\d{2}")
+            if (!validMonth.matches(first) || !validMonth.matches(second)) return println("Months must use YYYY-MM format.")
+            val firstTotal = items.filter { it.date.startsWith(first) }.sumOf { it.amount }
+            val secondTotal = items.filter { it.date.startsWith(second) }.sumOf { it.amount }
+            println("$first: " + "%.2f".format(firstTotal))
+            println("$second: " + "%.2f".format(secondTotal))
+            println("Difference: " + "%.2f".format(kotlin.math.abs(firstTotal - secondTotal)))
+        }
+        "year-summary" -> {
             val year = args.getOrNull(1) ?: LocalDate.now().year.toString()
             if (!year.matches(Regex("\\d{4}"))) return println("Year must use YYYY format.")
             val monthly = items.filter { it.date.startsWith("$year-") }.groupBy { it.date.take(7) }.toSortedMap()
