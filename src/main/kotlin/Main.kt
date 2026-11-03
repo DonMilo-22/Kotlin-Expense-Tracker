@@ -12,7 +12,7 @@ fun load(): MutableList<Expense> {
     }.toMutableList()
 }
 fun save(items: List<Expense>) = store.writeText(items.joinToString("\n") { it.date + "\t" + it.amount + "\t" + it.category + "\t" + it.description })
-fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | top-category | largest | stats | today | week | budget <amount> [YYYY-MM] | export-csv | year-summary [YYYY] | help")
+fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | top-category | largest | stats | today | week | budget <amount> [YYYY-MM] | export-csv | year-summary [YYYY] | month-compare YYYY-MM YYYY-MM | help")
 
 fun main(args: Array<String>) {
     val items = load()
@@ -38,7 +38,7 @@ fun main(args: Array<String>) {
             save(items)
             println("Deleted: " + removed.description)
         }
-        "year-summary" -> {
+        "month-compare" -> {\n            val first = args.getOrNull(1) ?: return println("Use: month-compare YYYY-MM YYYY-MM")\n            val second = args.getOrNull(2) ?: return println("Use: month-compare YYYY-MM YYYY-MM")\n            val validMonth = Regex("\\\\d{4}-\\\\d{2}")\n            if (!validMonth.matches(first) || !validMonth.matches(second)) return println("Months must use YYYY-MM format.")\n            val firstTotal = items.filter { it.date.startsWith(first) }.sumOf { it.amount }\n            val secondTotal = items.filter { it.date.startsWith(second) }.sumOf { it.amount }\n            println("$first: " + "%.2f".format(firstTotal))\n            println("$second: " + "%.2f".format(secondTotal))\n            println("Difference: " + "%.2f".format(kotlin.math.abs(firstTotal - secondTotal)))\n        }\n        "year-summary" -> {
             val year = args.getOrNull(1) ?: LocalDate.now().year.toString()
             if (!year.matches(Regex("\\d{4}"))) return println("Year must use YYYY format.")
             val monthly = items.filter { it.date.startsWith("$year-") }.groupBy { it.date.take(7) }.toSortedMap()
