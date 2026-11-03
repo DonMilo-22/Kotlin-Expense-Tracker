@@ -123,3 +123,7 @@ kotlin Main.kt export-csv
 ## Actualización 2026-10-30
 
 - Added `year-summary [YYYY]` to display monthly expense totals and the annual total for the selected year (current year by default). Example: `./gradlew run --args="year-summary 2026"`.
+
+## Actualización 2026-11-02
+
+- Added `month-compare YYYY-MM YYYY-MM` to compare the totals for two months and show their absolute difference. Example: `./gradlew run --args="month-compare 2026-10 2026-11"`.
