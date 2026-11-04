@@ -41,21 +41,13 @@ fun main(args: Array<String>) {
         "month-compare" -> {
             val first = args.getOrNull(1) ?: return println("Use: month-compare YYYY-MM YYYY-MM")
             val second = args.getOrNull(2) ?: return println("Use: month-compare YYYY-MM YYYY-MM")
-            val validMonth = Regex("\\d{4}-\\\\d{2}")
+            val validMonth = Regex("\\d{4}-\\d{2}")
             if (!validMonth.matches(first) || !validMonth.matches(second)) return println("Months must use YYYY-MM format.")
             val firstTotal = items.filter { it.date.startsWith(first) }.sumOf { it.amount }
             val secondTotal = items.filter { it.date.startsWith(second) }.sumOf { it.amount }
             println("$first: " + "%.2f".format(firstTotal))
             println("$second: " + "%.2f".format(secondTotal))
             println("Difference: " + "%.2f".format(kotlin.math.abs(firstTotal - secondTotal)))
-        }
-        "year-summary" -> {
-            val year = args.getOrNull(1) ?: LocalDate.now().year.toString()
-            if (!year.matches(Regex("\\d{4}"))) return println("Year must use YYYY format.")
-            val monthly = items.filter { it.date.startsWith("$year-") }.groupBy { it.date.take(7) }.toSortedMap()
-            if (monthly.isEmpty()) println("No expenses for $year.")
-            monthly.forEach { (month, expenses) -> println("$month | " + "%.2f".format(expenses.sumOf { it.amount })) }
-            println("Year total: " + "%.2f".format(monthly.values.flatten().sumOf { it.amount }))
         }
         "year-summary" -> {
             val year = args.getOrNull(1) ?: LocalDate.now().year.toString()
