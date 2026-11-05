@@ -12,7 +12,7 @@ fun load(): MutableList<Expense> {
     }.toMutableList()
 }
 fun save(items: List<Expense>) = store.writeText(items.joinToString("\n") { it.date + "\t" + it.amount + "\t" + it.category + "\t" + it.description })
-fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | top-category | largest | stats | today | week | budget <amount> [YYYY-MM] | export-csv | year-summary [YYYY] | month-compare YYYY-MM YYYY-MM | help")
+fun help() = println("Commands: add <amount> <category> <description...> | list [category] | delete <number> | summary [YYYY-MM] | total | average | categories | top-category | largest | stats | today | week | budget <amount> [YYYY-MM] | export-csv | year-summary [YYYY] | month-compare YYYY-MM YYYY-MM | top-expenses [count] | help")
 
 fun main(args: Array<String>) {
     val items = load()
@@ -37,6 +37,13 @@ fun main(args: Array<String>) {
             val removed = items.removeAt(index)
             save(items)
             println("Deleted: " + removed.description)
+        }
+        "top-expenses" -> {
+            val count = args.getOrNull(1)?.toIntOrNull() ?: 5
+            if (count <= 0) return println("Use: top-expenses [positive count]")
+            val ranked = items.sortedByDescending { it.amount }.take(count)
+            if (ranked.isEmpty()) println("No expenses yet.")
+            else ranked.forEachIndexed { index, item -> println("${index + 1}. ${item.date} | " + "%.2f".format(item.amount) + " | ${item.category} | ${item.description}") }
         }
         "month-compare" -> {
             val first = args.getOrNull(1) ?: return println("Use: month-compare YYYY-MM YYYY-MM")
