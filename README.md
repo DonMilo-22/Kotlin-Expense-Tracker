@@ -127,3 +127,7 @@ kotlin Main.kt export-csv
 ## Actualización 2026-11-02
 
 - Added `month-compare YYYY-MM YYYY-MM` to compare the totals for two months and show their absolute difference. Example: `./gradlew run --args="month-compare 2026-10 2026-11"`.
+
+## Actualización 2026-11-04
+
+- Added `top-expenses [count]` to rank the largest expenses first (five by default). Example: `./gradlew run --args="top-expenses 3"`.
